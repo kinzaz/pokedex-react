@@ -3,6 +3,8 @@ import { Pokedex } from './components/Pokedex';
 import { Pokemon } from './types/Pokemon';
 import { fetchPokemonList } from './api/fetchPokemonList';
 import { SearchBar } from './components/SearchBar';
+import { Footer } from './components/Layout/Footer';
+import { Header } from './components/Layout/Header';
 
 const App = () => {
 	const [modal, setModal] = useState(false);
@@ -38,6 +40,7 @@ const App = () => {
 
 	return (
 		<>
+			<Header />
 			<SearchBar
 				setPokemonList={setPokemonList}
 				pokemonAmount={pokemonAmount}
@@ -67,6 +70,7 @@ const App = () => {
 				searchBarRef={searchBarRef}
 				disabledButton={disabledButton}
 			/>
+			<Footer />
 		</>
 	);
 };
