@@ -1,10 +1,12 @@
+import { PokemonType } from '../PokemonType';
 import * as C from './styles';
 import { ReactComponent as WeightIcon } from '../../assets/icon-weight.svg';
 import { ReactComponent as RulerIcon } from '../../assets/icon-ruler.svg';
 import { ReactComponent as BoltIcon } from '../../assets/icon-bolt.svg';
 import { Pokemon } from '../../types/Pokemon';
-import { pokemonTypes } from '../../types/pokemonTypes';
+import { pokemonTypes } from '../../types/pokemonTypes'; 
 import { fetchPokemon } from '../../api/fetchPokemon';
+import { SkeletonLoading } from '../helper/SkeletonLoading';
 
 type PokemonCardProps = {
 	pokemon: Pokemon;
@@ -13,6 +15,8 @@ type PokemonCardProps = {
 };
 
 export const PokemonCard = (props: PokemonCardProps) => {
+	const imgUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${props.pokemon.id}.png`;
+
 	const [{ color }] = pokemonTypes.filter(
 		type => props.pokemon.types[0].type.name.indexOf(type.name) !== -1
 	);
@@ -32,8 +36,16 @@ export const PokemonCard = (props: PokemonCardProps) => {
 	return (
 		<C.Container>
 			<C.CardOverlay color={color} />
+			<C.PokemonImg>
+				<SkeletonLoading src={imgUrl} alt={props.pokemon.name} />
+			</C.PokemonImg>
 			<C.PokemonNumber>{formatPokemonId(props.pokemon.id)}</C.PokemonNumber>
 			<C.PokemonName>{props.pokemon.name}</C.PokemonName>
+			<C.PokemonType>
+				{props.pokemon.types.map(({ type }) => (
+					<PokemonType key={type.name} type={type.name} tabIndex={false} />
+				))}
+			</C.PokemonType>
 			<C.PokemonFeatures>
 				<C.PokemonWeight>
 					<div>
@@ -52,7 +64,7 @@ export const PokemonCard = (props: PokemonCardProps) => {
 			</C.PokemonFeatures>
 			<C.MoreDetailsButton color={color} onClick={handleClick}>
 				<BoltIcon />
-				More Details
+				More details
 			</C.MoreDetailsButton>
 		</C.Container>
 	);
