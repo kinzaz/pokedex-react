@@ -6,6 +6,7 @@ export const Wrapper = styled.div`
 
 export const PokemonList = styled.div`
 	margin: 12.75rem auto 2.5rem;
+	margin-top: 150px;
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	row-gap: 12.5rem;

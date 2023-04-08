@@ -6,6 +6,7 @@ import { SearchBar } from './components/SearchBar';
 import { Footer } from './components/Layout/Footer';
 import { Header } from './components/Layout/Header';
 import { PokemonModal } from './components/PokemonModal';
+import { SelectQuantity } from './components/SelectQuantity';
 
 const App = () => {
 	const [modal, setModal] = useState(false);
@@ -17,15 +18,16 @@ const App = () => {
 	const [page, setPage] = useState(1);
 	const [showPagination, setShowPagination] = useState(true);
 	const [disabledButton, setDisabledButton] = useState(false);
+	const [limit, setLimit] = useState('10');
 	const searchBarRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		(async () => {
 			setLoading(true);
-			setPokemonList(await fetchPokemonList(1));
+			setPokemonList(await fetchPokemonList(1, +limit));
 			setLoading(false);
 		})();
-	}, []);
+	}, [limit]);
 
 	useEffect(() => {
 		const html = document.documentElement;
@@ -54,6 +56,7 @@ const App = () => {
 				setDisabledButton={setDisabledButton}
 				searchBarRef={searchBarRef}
 			/>
+			<SelectQuantity handleValue={(e) => setLimit(e.target.value)} />
 			<Pokedex
 				setModal={setModal}
 				setPokemonData={setPokemonData}
@@ -70,6 +73,7 @@ const App = () => {
 				setShowPagination={setShowPagination}
 				searchBarRef={searchBarRef}
 				disabledButton={disabledButton}
+				limit={+limit}
 			/>
 			<Footer />
 			{pokemonData && modal && (

@@ -10,6 +10,7 @@ export const Container = styled.div`
 	row-gap: 1.5rem;
 	column-gap: 2rem;
 	margin: 4.5rem 0;
+	margin-bottom: 30px;
 	border-bottom: 1px solid #24293f;
 	padding-bottom: 2.19rem;
 

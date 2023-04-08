@@ -11,6 +11,7 @@ type UsePaginationProps = {
 	searchBarRef: React.MutableRefObject<HTMLDivElement>;
 	page: number;
 	setPage: (value: number) => void;
+	limit: number;
 };
 
 export function UsePagination(props: UsePaginationProps) {
@@ -18,7 +19,7 @@ export function UsePagination(props: UsePaginationProps) {
 		props.setPage(value);
 
 		props.setLoading(true);
-		props.setPokemonList(await fetchPokemonList(value));
+		props.setPokemonList(await fetchPokemonList(value, props.limit));
 		props.setLoading(false);
 
 		window.scrollTo({

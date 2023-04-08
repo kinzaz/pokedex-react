@@ -31,8 +31,8 @@ export const SearchField = (props: SearchFieldProps) => {
 		<C.Container onSubmit={handleSubmit}>
 			<C.InputText
 				value={inputValue}
-				onChange={e => setInputValue(e.target.value)}
-				placeholder="Search Pokémon"
+				onChange={(e) => setInputValue(e.target.value)}
+				placeholder='Search Pokémon'
 				required
 			/>
 			<C.SearchButton>

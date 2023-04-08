@@ -23,6 +23,7 @@ type PokedexProps = {
 	setShowPagination: (value: boolean) => void;
 	disabledButton: boolean;
 	searchBarRef: React.MutableRefObject<HTMLDivElement>;
+	limit: number;
 };
 
 export const Pokedex = (props: PokedexProps) => {
@@ -30,12 +31,12 @@ export const Pokedex = (props: PokedexProps) => {
 	else
 		return (
 			<C.Wrapper>
-				<div className="main-container">
+				<div className='main-container'>
 					{props.loading ? (
 						<Loading />
 					) : (
 						<C.PokemonList>
-							{props.pokemonList.map(pokemon => (
+							{props.pokemonList.map((pokemon) => (
 								<PokemonCard
 									key={pokemon.id}
 									pokemon={pokemon}
@@ -54,6 +55,7 @@ export const Pokedex = (props: PokedexProps) => {
 								searchBarRef={props.searchBarRef}
 								page={props.page}
 								setPage={props.setPage}
+								limit={props.limit}
 							/>
 						)}
 					{props.pokemonList.length > 1 &&
@@ -62,7 +64,7 @@ export const Pokedex = (props: PokedexProps) => {
 							<C.ButtonContainer>
 								{props.pokemonAmount < 54 && (
 									<button
-										className="button"
+										className='button'
 										onClick={() =>
 											props.setPokemonAmount(props.pokemonAmount + 9)
 										}
@@ -74,7 +76,7 @@ export const Pokedex = (props: PokedexProps) => {
 								)}
 
 								<button
-									className="button"
+									className='button'
 									onClick={() => {
 										window.scrollTo({
 											top: props.searchBarRef.current.offsetTop - 56,

@@ -19,8 +19,9 @@ type SearchBarProps = {
 
 export const SearchBar = (props: SearchBarProps) => {
 	return (
-		<div className="main-container" ref={props.searchBarRef}>
+		<div className='main-container' ref={props.searchBarRef}>
 			<C.Container>
+
 				<HomeButton
 					setPokemonList={props.setPokemonList}
 					setLoading={props.setLoading}
