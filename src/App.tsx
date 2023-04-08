@@ -5,6 +5,7 @@ import { fetchPokemonList } from './api/fetchPokemonList';
 import { SearchBar } from './components/SearchBar';
 import { Footer } from './components/Layout/Footer';
 import { Header } from './components/Layout/Header';
+import { PokemonModal } from './components/PokemonModal';
 
 const App = () => {
 	const [modal, setModal] = useState(false);
@@ -71,6 +72,9 @@ const App = () => {
 				disabledButton={disabledButton}
 			/>
 			<Footer />
+			{pokemonData && modal && (
+				<PokemonModal setModal={setModal} pokemonData={pokemonData} />
+			)}
 		</>
 	);
 };
