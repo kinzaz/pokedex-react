@@ -15,8 +15,8 @@ export const SkeletonLoading = ({ src, alt }: SkeletonLoadingProps) => {
 			<img
 				onLoad={() => setSkeleton(false)}
 				src={src}
-				width="256"
-				height="256"
+				width='256'
+				height='256'
 				alt={alt}
 			/>
 		</C.Container>

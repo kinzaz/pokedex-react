@@ -21,7 +21,7 @@ export const PokemonModal = ({ setModal, pokemonData }: PokemonModalProps) => {
 	const imgUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${pokemonData.id}.png`;
 
 	const [{ color }] = pokemonTypes.filter(
-		type => pokemonData.types[0].type.name.indexOf(type.name) !== -1
+		(type) => pokemonData.types[0].type.name.indexOf(type.name) !== -1
 	);
 
 	const formatStatName = (statName: string) => {
@@ -54,7 +54,7 @@ export const PokemonModal = ({ setModal, pokemonData }: PokemonModalProps) => {
 	);
 
 	return (
-		<C.Wrapper onClick={e => e.target === e.currentTarget && setModal(false)}>
+		<C.Wrapper onClick={(e) => e.target === e.currentTarget && setModal(false)}>
 			<C.Modal>
 				<C.PokemonData>
 					<C.CardOverlay color={color} />
