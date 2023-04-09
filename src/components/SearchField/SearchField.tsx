@@ -1,29 +1,16 @@
 import * as C from './styles';
-import { ReactComponent as SearchIcon } from '../../assets/icon-search.svg';
+import { ReactComponent as SearchIcon } from '@/assets/icon-search.svg';
 import { SyntheticEvent, useState } from 'react';
-import { fetchPokemon } from '../../api/fetchPokemon';
-import { Pokemon } from '../../types/Pokemon';
+import { useAppDispatch } from '@/store';
+import { loadPokedexByName } from '@/features/pokedex/model/pokedex.slice';
 
-type SearchFieldProps = {
-	setPokemonList: (data: Pokemon[]) => void;
-	setError: (value: boolean) => void;
-	setLoading: (value: boolean) => void;
-};
-
-export const SearchField = (props: SearchFieldProps) => {
+export const SearchField = () => {
 	const [inputValue, setInputValue] = useState('');
+	const dispatch = useAppDispatch();
 
-	const handleSubmit = async (e: SyntheticEvent) => {
+	const handleSubmit = (e: SyntheticEvent) => {
 		e.preventDefault();
-
-		props.setLoading(true);
-		const requestPokemon = await fetchPokemon(inputValue.toLowerCase());
-
-		requestPokemon.response.ok
-			? props.setPokemonList([requestPokemon.data])
-			: props.setError(requestPokemon.error);
-
-		props.setLoading(false);
+		dispatch(loadPokedexByName(inputValue.toLowerCase()));
 		setInputValue('');
 	};
 

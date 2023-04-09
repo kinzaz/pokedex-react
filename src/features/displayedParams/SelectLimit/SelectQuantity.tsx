@@ -1,16 +1,15 @@
-import { useEffect, useState } from 'react';
 import * as C from './styles';
+import { useAppDispatch } from '@/store';
+import { setLimit } from '../model/displayedParams.slice';
 
-export const SelectQuantity = ({
-	handleValue,
-}: {
-	handleValue: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-}): JSX.Element => {
+export const SelectLimit = (): JSX.Element => {
+	const dispatch = useAppDispatch();
+
 	return (
 		<div className='main-container'>
 			<C.Container>
 				<p>Display</p>
-				<C.Select onChange={(e) => handleValue(e)}>
+				<C.Select onChange={(e) => dispatch(setLimit(+e.target.value))}>
 					<option value='10'>10</option>
 					<option value='20'>20</option>
 					<option value='50'>50</option>

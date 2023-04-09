@@ -1,5 +1,5 @@
 import * as C from './styles';
-import imgSrc from '../../../assets/img-pikachu-sad-min.png';
+import imgSrc from '@/assets/img-pikachu-sad-min.png';
 
 export const ErrorMessage = () => {
 	return (

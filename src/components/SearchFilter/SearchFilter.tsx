@@ -1,44 +1,20 @@
 import * as C from './styles';
-import { SyntheticEvent, useEffect, useState } from 'react';
-import { fetchPokemonByType } from '../../api/fetchPokemonByType';
+import { SyntheticEvent } from 'react';
 import { Slide } from '../Slide';
 import { PokemonType } from '../PokemonType';
-import { pokemonTypes } from '../../types/pokemonTypes';
-import { Pokemon } from '../../types/Pokemon';
+import { pokemonTypes } from '@/types/pokemonTypes';
+import { useAppDispatch } from '@/store';
+import { loadPokedexByType } from '@/features/pokedex/model/pokedex.slice';
+import { setPagination } from '@/features/displayedParams/model/displayedParams.slice';
 
-type SearchFilterProps = {
-	setPokemonList: (data: Pokemon[]) => void;
-	pokemonAmount: number;
-	setPokemonAmount: (value: number) => void;
-	setLoading: (value: boolean) => void;
-	setShowPagination: (value: boolean) => void;
-	setDisabledButton: (value: boolean) => void;
-};
+export const SearchFilter = () => {
+	const dispatch = useAppDispatch();
 
-export const SearchFilter = (props: SearchFilterProps) => {
-	const [selectedType, setSelectedType] = useState('');
-
-	const handleClick = async (e: SyntheticEvent) => {
+	const handleClick = (e: SyntheticEvent) => {
 		const typeName = (e.currentTarget as HTMLButtonElement).value;
-		setSelectedType(typeName);
-		props.setPokemonAmount(9);
-		props.setLoading(true);
-		props.setPokemonList(await fetchPokemonByType(typeName));
-		props.setLoading(false);
-		props.setShowPagination(false);
+		dispatch(loadPokedexByType(typeName));
+		dispatch(setPagination(false));
 	};
-
-	useEffect(() => {
-		if (selectedType) {
-			(async () => {
-				props.setDisabledButton(true);
-				props.setPokemonList(
-					await fetchPokemonByType(selectedType, props.pokemonAmount)
-				);
-				props.setDisabledButton(false);
-			})();
-		}
-	}, [props.pokemonAmount]);
 
 	return (
 		<C.Container>

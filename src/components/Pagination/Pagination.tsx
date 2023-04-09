@@ -1,26 +1,28 @@
 import * as C from './styles';
 import usePagination from '@mui/material/usePagination';
-import { ReactComponent as LeftArrowIcon } from '../../assets/icon-arrow-left.svg';
-import { ReactComponent as RightArrowIcon } from '../../assets/icon-arrow-right.svg';
-import { Pokemon } from '../../types/Pokemon';
-import { fetchPokemonList } from '../../api/fetchPokemonList';
+import { ReactComponent as LeftArrowIcon } from '@/assets/icon-arrow-left.svg';
+import { ReactComponent as RightArrowIcon } from '@/assets/icon-arrow-right.svg';
+import { useAppDispatch } from '@/store';
+import { loadPokedex } from '@/features/pokedex/model/pokedex.slice';
+import { useSelector } from 'react-redux';
+import {
+	selectLimit,
+	selectPage,
+} from '@/features/displayedParams/model/displayedParams-selectors';
+import { setPage } from '@/features/displayedParams/model/displayedParams.slice';
 
 type UsePaginationProps = {
-	setPokemonList: (data: Pokemon[]) => void;
-	setLoading: (value: boolean) => void;
 	searchBarRef: React.MutableRefObject<HTMLDivElement>;
-	page: number;
-	setPage: (value: number) => void;
-	limit: number;
 };
 
 export function UsePagination(props: UsePaginationProps) {
-	const handleChange = async (e: React.ChangeEvent<unknown>, value: number) => {
-		props.setPage(value);
+	const dispatch = useAppDispatch();
+	const limit = useSelector(selectLimit);
+	const page = useSelector(selectPage);
 
-		props.setLoading(true);
-		props.setPokemonList(await fetchPokemonList(value, props.limit));
-		props.setLoading(false);
+	const handleChange = async (e: React.ChangeEvent<unknown>, value: number) => {
+		dispatch(setPage(value));
+		await dispatch(loadPokedex({ page: value, limit }));
 
 		window.scrollTo({
 			top: props.searchBarRef.current.offsetTop - 56,
@@ -30,7 +32,7 @@ export function UsePagination(props: UsePaginationProps) {
 	const { items } = usePagination({
 		count: 10,
 		siblingCount: 0,
-		page: props.page,
+		page: page,
 		onChange: handleChange,
 	});
 

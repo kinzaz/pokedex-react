@@ -1,33 +1,16 @@
-import { useEffect, useRef, useState } from 'react';
-import { Pokedex } from './components/Pokedex';
-import { Pokemon } from './types/Pokemon';
-import { fetchPokemonList } from './api/fetchPokemonList';
-import { SearchBar } from './components/SearchBar';
-import { Footer } from './components/Layout/Footer';
-import { Header } from './components/Layout/Header';
-import { PokemonModal } from './components/PokemonModal';
-import { SelectQuantity } from './components/SelectQuantity';
+import { useEffect, useRef } from 'react';
+import { Pokedex } from '@/features/pokedex';
+import { SearchBar } from '@/components/SearchBar';
+import { Footer } from '@/components/Layout/Footer';
+import { Header } from '@/components/Layout/Header';
+import { PokemonModal } from '@/components/PokemonModal';
+import { SelectLimit } from '@/features/displayedParams/SelectLimit';
+import { selectModal } from '@/features/displayedParams/model/displayedParams-selectors';
+import { useSelector } from 'react-redux';
 
 const App = () => {
-	const [modal, setModal] = useState(false);
-	const [pokemonData, setPokemonData] = useState<Pokemon>();
-	const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
-	const [pokemonAmount, setPokemonAmount] = useState(9);
-	const [error, setError] = useState(false);
-	const [loading, setLoading] = useState(false);
-	const [page, setPage] = useState(1);
-	const [showPagination, setShowPagination] = useState(true);
-	const [disabledButton, setDisabledButton] = useState(false);
-	const [limit, setLimit] = useState('10');
 	const searchBarRef = useRef<HTMLDivElement>(null);
-
-	useEffect(() => {
-		(async () => {
-			setLoading(true);
-			setPokemonList(await fetchPokemonList(1, +limit));
-			setLoading(false);
-		})();
-	}, [limit]);
+	const modal = useSelector(selectModal);
 
 	useEffect(() => {
 		const html = document.documentElement;
@@ -37,48 +20,14 @@ const App = () => {
 			: (html.style.overflow = 'initial');
 	}, [modal]);
 
-	useEffect(() => {
-		setError(false);
-	}, [pokemonList]);
-
 	return (
 		<>
 			<Header />
-			<SearchBar
-				setPokemonList={setPokemonList}
-				pokemonAmount={pokemonAmount}
-				setPokemonAmount={setPokemonAmount}
-				setError={setError}
-				setLoading={setLoading}
-				setPage={setPage}
-				setShowPagination={setShowPagination}
-				disabledButton={disabledButton}
-				setDisabledButton={setDisabledButton}
-				searchBarRef={searchBarRef}
-			/>
-			<SelectQuantity handleValue={(e) => setLimit(e.target.value)} />
-			<Pokedex
-				setModal={setModal}
-				setPokemonData={setPokemonData}
-				pokemonList={pokemonList}
-				setPokemonList={setPokemonList}
-				pokemonAmount={pokemonAmount}
-				setPokemonAmount={setPokemonAmount}
-				error={error}
-				loading={loading}
-				setLoading={setLoading}
-				page={page}
-				setPage={setPage}
-				showPagination={showPagination}
-				setShowPagination={setShowPagination}
-				searchBarRef={searchBarRef}
-				disabledButton={disabledButton}
-				limit={+limit}
-			/>
+			<SearchBar searchBarRef={searchBarRef} />
+			<SelectLimit />
+			<Pokedex searchBarRef={searchBarRef} />
 			<Footer />
-			{pokemonData && modal && (
-				<PokemonModal setModal={setModal} pokemonData={pokemonData} />
-			)}
+			{modal && <PokemonModal />}
 		</>
 	);
 };

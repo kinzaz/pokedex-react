@@ -1,30 +1,31 @@
-import { PokemonType } from '../PokemonType';
+import { PokemonType } from '@/components/PokemonType';
 import * as C from './styles';
-import { ReactComponent as WeightIcon } from '../../assets/icon-weight.svg';
-import { ReactComponent as RulerIcon } from '../../assets/icon-ruler.svg';
-import { ReactComponent as BoltIcon } from '../../assets/icon-bolt.svg';
-import { Pokemon } from '../../types/Pokemon';
-import { pokemonTypes } from '../../types/pokemonTypes'; 
-import { fetchPokemon } from '../../api/fetchPokemon';
-import { SkeletonLoading } from '../helper/SkeletonLoading';
+import { ReactComponent as WeightIcon } from '@/assets/icon-weight.svg';
+import { ReactComponent as RulerIcon } from '@/assets/icon-ruler.svg';
+import { ReactComponent as BoltIcon } from '@/assets/icon-bolt.svg';
+import { Pokemon } from '@/types/Pokemon';
+import { pokemonTypes } from '@/types/pokemonTypes';
+import { SkeletonLoading } from '@/components/helper/SkeletonLoading';
+import { useAppDispatch } from '@/store';
+import { loadPokemonByName } from './model/pokemon.slice';
+import { setModal } from '../displayedParams/model/displayedParams.slice';
 
 type PokemonCardProps = {
 	pokemon: Pokemon;
-	setModal: (value: boolean) => void;
-	setPokemonData: (data: Pokemon) => void;
 };
 
 export const PokemonCard = (props: PokemonCardProps) => {
+	const dispatch = useAppDispatch();
+
 	const imgUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${props.pokemon.id}.png`;
 
 	const [{ color }] = pokemonTypes.filter(
-		type => props.pokemon.types[0].type.name.indexOf(type.name) !== -1
+		(type) => props.pokemon.types[0].type.name.indexOf(type.name) !== -1
 	);
 
-	const handleClick = async () => {
-		const requestPokemon = await fetchPokemon(props.pokemon.name);
-		props.setPokemonData(requestPokemon.data);
-		props.setModal(true);
+	const handleClick = () => {
+		dispatch(loadPokemonByName(props.pokemon.name));
+		dispatch(setModal(true));
 	};
 
 	const formatPokemonId = (id: number) => {

@@ -1,33 +1,35 @@
 import * as C from './styles';
-import { ReactComponent as HomeIcon } from '../../assets/icon-home.svg';
-import { fetchPokemonList } from '../../api/fetchPokemonList';
-import { Pokemon } from '../../types/Pokemon';
+import { ReactComponent as HomeIcon } from '@/assets/icon-home.svg';
+import { loadPokedex } from '@/features/pokedex/model/pokedex.slice';
+import { useAppDispatch } from '@/store';
+import { useSelector } from 'react-redux';
+import {
+	selectIsDisabledButton,
+	selectLimit,
+} from '@/features/displayedParams/model/displayedParams-selectors';
+import {
+	setDisabledButton,
+	setPage,
+	setPagination,
+} from '@/features/displayedParams/model/displayedParams.slice';
 
-type HomeButtonProps = {
-	setPokemonList: (data: Pokemon[]) => void;
-	setLoading: (value: boolean) => void;
-	setPage: (value: number) => void;
-	setShowPagination: (value: boolean) => void;
-	disabledButton: boolean;
-	setDisabledButton: (value: boolean) => void;
-};
-
-export const HomeButton = (props: HomeButtonProps) => {
+export const HomeButton = () => {
+	const limit = useSelector(selectLimit);
+	const disabledButton = useSelector(selectIsDisabledButton);
+	const dispatch = useAppDispatch();
 	const handleClick = async () => {
-		props.setLoading(true);
-		props.setDisabledButton(true);
-		props.setPokemonList(await fetchPokemonList(1));
-		props.setLoading(false);
-		props.setDisabledButton(false);
-		props.setPage(1);
-		props.setShowPagination(true);
+		dispatch(setDisabledButton(true));
+		await dispatch(loadPokedex({ page: 1, limit }));
+		dispatch(setDisabledButton(false));
+		dispatch(setPage(1));
+		dispatch(setPagination(true));
 	};
 
 	return (
 		<C.HomeButton
-			className="button"
+			className='button'
 			onClick={handleClick}
-			disabled={props.disabledButton ? true : false}
+			disabled={disabledButton ? true : false}
 		>
 			<HomeIcon />
 			Restart

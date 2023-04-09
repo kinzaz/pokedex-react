@@ -1,8 +1,8 @@
 import * as C from './styles';
-import { ReactComponent as LeftArrowIcon } from '../../assets/icon-arrow-left.svg';
-import { ReactComponent as RightArrowIcon } from '../../assets/icon-arrow-right.svg';
+import { ReactComponent as LeftArrowIcon } from '@/assets/icon-arrow-left.svg';
+import { ReactComponent as RightArrowIcon } from '@/assets/icon-arrow-right.svg';
+import { useMedia } from '@/hooks/useMedia';
 import { ReactNode, SyntheticEvent, useState } from 'react';
-import { useMedia } from '../../hooks/useMedia';
 
 type SlideProps = {
 	children: ReactNode;
@@ -24,7 +24,7 @@ export const Slide = ({ children }: SlideProps) => {
 		<C.SlideContainer>
 			{!mobile && (
 				<C.SlideButton
-					value="prev"
+					value='prev'
 					onClick={slideNavigation}
 					disabled={slidePosition === 0 && true}
 				>
@@ -38,7 +38,7 @@ export const Slide = ({ children }: SlideProps) => {
 			</C.Slide>
 			{!mobile && (
 				<C.SlideButton
-					value="next"
+					value='next'
 					onClick={slideNavigation}
 					disabled={slidePosition === -87.5 && true}
 				>

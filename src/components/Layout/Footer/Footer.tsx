@@ -1,9 +1,9 @@
-import { SocialMedia } from '../../SocialMedia';
+import { SocialMedia } from '@/components/SocialMedia';
 import * as C from './styles';
 
 export const Footer = () => {
 	return (
-		<div className="main-container">
+		<div className='main-container'>
 			<C.Container>
 				<C.Copy>
 					<span>Image copyright Nintendo & The Pokémon Company</span>
